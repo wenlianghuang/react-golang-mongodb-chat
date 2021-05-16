@@ -27,4 +27,8 @@ let sendMsg = (msg) => {
     socket.send(msg);
 }
 
-export {connect,sendMsg}
+let clearMessage = () =>{
+    sendMsg("clear")
+}
+
+export {connect,sendMsg,clearMessage}

@@ -1,11 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
-import {connect,sendMsg} from "./api"
+import {connect,sendMsg,clearMessage} from "./api"
 import Header from './components/Header'
 import Message from './components/Message'
 //import ChatHistory from './AllDetail.scss'
 import './AllDetail.scss'
 import { useState,useEffect } from 'react';
+import {Button,Tag} from "antd"
 function App() {
   const [chatHistory,setChatHistory] = useState([]);
   const [chatInput,setChatInput] = useState("")
@@ -24,8 +25,13 @@ function App() {
     
   })
   
-  let messages = chatHistory.map((msg,index)=>(
+  /*let messages = chatHistory.map((msg,index)=>(
     <p key={index}>{msg.body}</p>
+  ))*/
+  let messages = chatHistory.map((msg,index)=>(
+    <p key={index}>
+      {msg.body}
+    </p>
   ))
   
   
@@ -37,8 +43,14 @@ function App() {
       <div className="ChatHistory">
         <h2>Chat History</h2>
         
-        {messages}
+        <Button type="primary" onClick={clearMessage} >
+          Clear  
+        </Button> 
+        {/*{messages}*/}
         
+      </div>
+      <div className="App-messages">
+        {messages}
       </div>
       <div className="ChatInput">
         <input onKeyDown={send} />

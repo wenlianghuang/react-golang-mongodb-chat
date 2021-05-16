@@ -10,7 +10,6 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -23,9 +22,8 @@ type Client struct {
 }
 
 type Message struct {
-	ID   primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	Type int                `json:"type"`
-	Body string             `json:"body"`
+	Type int    `json:"type"`
+	Body string `json:"body"`
 }
 
 var collection *mongo.Collection
@@ -43,6 +41,7 @@ func loadTheEnv() {
 	}
 }
 
+//insert one object to database
 func createDBInstance() {
 	connectionString := os.Getenv("DB_URI")
 
@@ -106,6 +105,13 @@ func (c *Client) Read() {
 		}
 
 		message := Message{Type: messageType, Body: string(p)}
+		if message.Body == "clear" {
+			if err = collection.Drop(context.Background()); err != nil {
+				log.Fatal(err)
+			}
+			break
+		}
+
 		c.Pool.Broadcast <- message
 		fmt.Printf("Message Received: %+v\n", message)
 		collection.InsertOne(context.Background(), message)
