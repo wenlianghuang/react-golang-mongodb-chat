@@ -5,8 +5,8 @@ import Header from './components/Header'
 import Message from './components/Message'
 //import ChatHistory from './AllDetail.scss'
 import './AllDetail.scss'
-import { useState,useEffect } from 'react';
-import {Button,Tag} from "antd"
+import { useState,useEffect, Children } from 'react';
+import Button from '@material-ui/core/Button'
 function App() {
   const [chatHistory,setChatHistory] = useState([]);
   const [chatInput,setChatInput] = useState("")
@@ -20,19 +20,26 @@ function App() {
 
   useEffect(()=>{
     connect((msg)=>{
-      setChatHistory(chatHistory => [...chatHistory,msg])
+      console.log("msg.body: ",msg.body)
+      if(msg.body === "clear"){
+        console.log("Clear Achevie!!!")
+        setChatHistory([])
+      }else{
+        setChatHistory(chatHistory => [...chatHistory,msg])
+      }
+      //setChatHistory(chatHistory => [...chatHistory,msg])
     })
     
   })
   
-  /*let messages = chatHistory.map((msg,index)=>(
-    <p key={index}>{msg.body}</p>
-  ))*/
   let messages = chatHistory.map((msg,index)=>(
     <p key={index}>
       {msg.body}
     </p>
   ))
+  
+  
+  
   
   
  
@@ -43,7 +50,7 @@ function App() {
       <div className="ChatHistory">
         <h2>Chat History</h2>
         
-        <Button type="primary" onClick={clearMessage} >
+        <Button variant="contained" color="primary" onClick={clearMessage} >
           Clear  
         </Button> 
         {/*{messages}*/}

@@ -106,10 +106,14 @@ func (c *Client) Read() {
 
 		message := Message{Type: messageType, Body: string(p)}
 		if message.Body == "clear" {
-			if err = collection.Drop(context.Background()); err != nil {
+			fmt.Println("CLEAR")
+			collection.Drop(context.Background())
+			/*if err = collection.Drop(context.Background()); err != nil {
 				log.Fatal(err)
-			}
-			break
+			}*/
+
+			//c.Pool.Broadcast <- message
+			//break
 		}
 
 		c.Pool.Broadcast <- message

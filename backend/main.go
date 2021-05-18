@@ -41,7 +41,6 @@ func reader(conn *websocket.Conn) {
 
 // define our WebSocket endpoint
 func serverWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
-	fmt.Println("WebSocket Endpoint Hit")
 	conn, err := websocket.Upgrade(w, r)
 	if err != nil {
 		fmt.Fprintf(w, "%+v\n", err)
